@@ -14,7 +14,7 @@ module.exports=(err,req,res,next) =>{
     }
     //wrong jwt error
     if(err.name==="JsonWebToken"){
-        const message=`Your yrl is Invalid please try again`;
+        const message=`Your url is Invalid please try again`;
         err =new  ErrorHandler(message,400)
     }
     //jwt expire
