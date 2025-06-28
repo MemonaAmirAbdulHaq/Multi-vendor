@@ -31,7 +31,7 @@ const Signup = () => {
     newForm.append("email",email);
     newForm.append("password",password);
     axios
-    .post(`${server}/user/create-user`,newForm,config)
+    .post(`${server}/user/create-user`, newForm, config)
     .then((res)=>{
       alert(res.message);
       

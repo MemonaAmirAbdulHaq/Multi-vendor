@@ -9,7 +9,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const fs=require("fs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
-const bcrypt = require("bcryptjs");
+
 
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try
@@ -33,7 +33,7 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
  //const fileUrl = `/uploads/${filename}`; // or full URL if needed
 
 
-  const avatar = fileUrl;
+  //const avatar = fileUrl;
 
   const user = {
     name: name,
@@ -75,10 +75,13 @@ const createActivationToken=(user)=>{
     })
 }
 //activate user
-router.post("/activation",catchAsyncErrors(async(req,res,next)=>{
+router.post("/activation",
+  catchAsyncErrors(async (req, res, next)=>{
   try {
     const {activation_token}=req.body;
-    const newUser=jwt.verify(activation_token,process.env.ACTIVATION_SECRET)
+    const newUser=jwt.verify
+    (activation_token,
+      process.env.ACTIVATION_SECRET);
   if(!newUser){
     return next(new ErrorHandler("Invalid token",400));
    
@@ -89,13 +92,13 @@ router.post("/activation",catchAsyncErrors(async(req,res,next)=>{
       if (user) {
         return next(new ErrorHandler("User already exists", 400));}
    
-   User.create({
+   user=await User.create({
       name ,
       email,
       avatar,
       password,
     });
-    sendToken(User,201,res);
+    sendToken(user , 201 , res);
   } catch (error) {
     return next(new ErrorHandler(error.message,500))
   }
