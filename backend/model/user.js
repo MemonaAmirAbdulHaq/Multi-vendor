@@ -69,10 +69,16 @@ const userSchema = new mongoose.Schema({
 //  Hash password
 userSchema.pre("save", async function (next){
   if(!this.isModified("password")){
-    next();
+    return next();
   }
-
-  this.password = await bcrypt.hash(this.password, 10);
+  
+  try {
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+  } catch (error) {
+    console.log("Error hashing password:", error);
+    next(error);
+  }
 });
 
 // jwt token
