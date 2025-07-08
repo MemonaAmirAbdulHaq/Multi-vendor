@@ -3,6 +3,7 @@ import { server } from '../server';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+
 const ActivationPage = () => {
   const { activation_token } = useParams();
   const [error, setError] = useState(false);
@@ -11,6 +12,7 @@ const ActivationPage = () => {
    if(activation_token){
     const activationEmail=async()=>{
       try {
+        console.log("Sending activation token:", { activation_token });//extra add
         const res=await axios.post (`${server}/user/activation`,{
           activation_token,
         });
@@ -24,7 +26,6 @@ const ActivationPage = () => {
     activationEmail();
    }
   }, [activation_token])
-  
   
   return (
     <div style={{
